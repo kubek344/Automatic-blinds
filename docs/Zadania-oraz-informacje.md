@@ -28,30 +28,30 @@ Produktem są automatyczne rolety, zastosowanie znajdą głównie w szkolnych sa
 
 # Harmonogram
 
-#### 1.
+#### 1. do 14.11.21
 
 * Wstępne omówienie projektu. (cały zespół)
 * Utworzenie schematu oraz listy materiałów. (Maciej)
 * Zaplanowanie wyglądu rolety. (Iga)
 * Ze względu na brak fizycznego prototypu programiści powinni w miare swoich możliwości pomóc innym członkom zespołu lub przestudiować biblioteki z których będą korzystać. 
 
-#### 2.
+#### 2. do 19.12.21
 
 * Utworzenie prototypu układu. (Maciej)
 * Zaprogramowanie podstawowych funkcji na podstawie prototypu. (Piotr, Kacper)
 * Projekt strony służącej do kontroli rolet. (Iga)
 
-#### 3.
+#### 3. 16.02.22
 
 * Wymodelowanie obudowy i pozostałych potrzebnych elementów na podstawie projektu. (Iga, Maciej)
 * Zaprogramowanie podstawowych funkcji. (Piotr, Kacper)
 
-#### 4.
+#### 4. 13.03.22
 
 * Rozpoczęcie budowy strony do kontroli rolet. (Piotr, Kacper, Iga)
 * Montaż rolet. (Maciej)
 
-#### 5.
+#### 5. 17.04.22
 
 * Integracja rolet z siecią lokalną. (Piotr, Kacper)
 * Doszlifowanie wyglądu i budowy rolet. (Maciej, Iga)
