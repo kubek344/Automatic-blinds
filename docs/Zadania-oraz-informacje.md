@@ -35,23 +35,23 @@ Produktem są automatyczne rolety, zastosowanie znajdą głównie w szkolnych sa
 * Zaplanowanie wyglądu rolety. (Iga)
 * Ze względu na brak fizycznego prototypu programiści powinni w miare swoich możliwości pomóc innym członkom zespołu lub przestudiować biblioteki z których będą korzystać. 
 
-#### 2. do 19.12.21
+#### 2. do 21.11.21
 
 * Utworzenie prototypu układu. (Maciej)
 * Zaprogramowanie podstawowych funkcji na podstawie prototypu. (Piotr, Kacper)
 * Projekt strony służącej do kontroli rolet. (Iga)
 
-#### 3. 16.02.22
+#### 3. do 12.12.22
 
 * Wymodelowanie obudowy i pozostałych potrzebnych elementów na podstawie projektu. (Iga, Maciej)
 * Zaprogramowanie podstawowych funkcji. (Piotr, Kacper)
 
-#### 4. 13.03.22
+#### 4. 02.01.22
 
 * Rozpoczęcie budowy strony do kontroli rolet. (Piotr, Kacper, Iga)
 * Montaż rolet. (Maciej)
 
-#### 5. 17.04.22
+#### 5. 23.01.22
 
 * Integracja rolet z siecią lokalną. (Piotr, Kacper)
 * Doszlifowanie wyglądu i budowy rolet. (Maciej, Iga)
