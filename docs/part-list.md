@@ -2,7 +2,7 @@
 (może ulec zmianom)
 
 ## Pilot
-- Kontroler TBD
+- ESP8266 //lub mniej prądożerny wifi-enabled kontroler
 - 3 tact switche (góra, auto-home, wyśrodkowanie)
 - Obudowa
 - Nakładki na przyciski
