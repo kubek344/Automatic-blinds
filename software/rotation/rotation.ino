@@ -82,14 +82,6 @@ void setup() {
 void loop() {
   //changePosition(0);
   //changePosition(1);
-  //changePosition(2);
-  o=1;
-  for(int x = 0; x < 100; x++){
-    if(digitalRead(0)){
-    }else{
-      o=0;
-    }
-  }
-  Serial.println(o);
+  //changePosition(2); 
   delay(500);
 }
