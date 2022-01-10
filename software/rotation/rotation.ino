@@ -10,55 +10,49 @@
 #define SLEEP 13
 BasicStepperDriver stepper(MOTOR_STEPS, DIR, STEP, SLEEP);
 
-#define BLIND_LEN 1
+#define BLIND_LEN 10
 
 int len = MOTOR_STEPS*MICROSTEPS*BLIND_LEN;
+int halflen = len/2;
+int halfblind = BLIND_LEN/2;
+int rot = MOTOR_STEPS*MICROSTEPS;
 int pos = 0;
 
 void changePosition(int param){
   switch(param){
-      case 0:
-        switch(pos){
-            case 1: //blind fully up
-              stepper.move(len/2);
-              break;
-            case 2:
-              stepper.move(len);
-              break;
-            default:
-              break;
-          }
+      case 0: //blind fully up
+        stepper.move(-(len-rot*pos));
+        pos=param*halfblind;
         break;
 
       case 1: //blind half down
-        switch(pos){
-            case 0:
-              stepper.move(len/2*-1);
-              break;
-            case 2:
-              stepper.move(len/2);
-              break;
-            default:
-              break;
-          }
+        stepper.move(halflen-rot*pos);
+        pos=param*halfblind;
         break;
 
       case 2: //blind fully down
-        switch(pos){
-            case 0:
-              stepper.move(len*-1);
-              break;
-            case 1:
-              stepper.move(len/2*-1);
-              break;
-            default:
-              break;
-          }
+        stepper.move(len-rot*pos);
+        pos=param*halfblind;
         break;
+
+      case 3: //blind down
+      if(pos<=len){
+        stepper.move(rot);
+        pos+=1;
+      }
+        break;
+
+      case 4: //blind up //lewo
+      if(pos>0){
+        stepper.move(-rot);
+        pos-=1;
+      }
+
+        break;
+
       default:
         break;
     }
-    pos=param;
 }
 
 
@@ -76,6 +70,7 @@ void loop() {
   byte mid = digitalRead(12);
   byte up = digitalRead(14);
   byte freee = digitalRead(0);
+  Serial.printf("%x %x %x %x \n", down, mid, up, freee);
   if(freee == LOW){
     if(digitalRead(SLEEP) == LOW){
       stepper.enable();
@@ -93,4 +88,5 @@ void loop() {
     changePosition(0);
   }
   delay(500);
+  stepper.move(200);
 }
