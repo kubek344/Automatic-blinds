@@ -11,7 +11,7 @@ IPAddress subnet(255,255,255,0);
 WiFiUDP Udp;
 unsigned int localUdpPort = 4210; // local port to listen on
 char incomingPacket[255]; // buffer for incoming packets
-char replyPacket = '7'; // a reply string to send back
+char* replyPacket = "03"; // a reply string to send back
 String line = "";
 
 WiFiServer server(80);
@@ -85,7 +85,7 @@ server.begin();
 
 void loop(){
   
-char newreplyPacket = replyPacket;
+char* newreplyPacket = replyPacket;
  WiFiClient client = server.available();// wait for a client (web browser) to connect
   if (client){
     Serial.println("\n[Client connected]");
@@ -111,13 +111,13 @@ char newreplyPacket = replyPacket;
 
         if(line.indexOf("/button/a") >= 0){
           Serial.println("Button A");
-          replyPacket = '0';
+          replyPacket = "00";
         }else if(line.indexOf("/button/b") >= 0){
           Serial.println("Button B");
-          replyPacket = '1';
+          replyPacket = "01";
         }else if(line.indexOf("/button/c") >= 0){
           Serial.println("Button C");
-          replyPacket = '2';
+          replyPacket = "02";
         }else{
           Serial.println("huh");
           }
@@ -145,14 +145,14 @@ byte a = digitalRead(12);
 byte b = digitalRead(13);
 byte c = digitalRead(14);
 if(a){
-  replyPacket = '0';
+  replyPacket = "10";
 }else if(b){
-  replyPacket = '1';
+  replyPacket = "11";
 }else if(c){
-  replyPacket = '2';
+  replyPacket = "12";
 }
 if(replyPacket != newreplyPacket){
-    Serial.println(wifi_softap_get_station_num());
+    Serial.println(replyPacket);
     Udp.beginPacket("192.168.4.255", localUdpPort);
     Udp.write(replyPacket);
     Udp.endPacket();

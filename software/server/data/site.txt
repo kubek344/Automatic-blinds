@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<head>
+    <title>Sterowanie</title>
+</head>
+<body>
+    <a href="button/a"><button style="float: left; height: 10vh; width: 30vw; background-color: black;"></button></a>
+    <div style="float: left; height: 30vh; width: 3vw;"></div>
+    <a href="button/b"><button style="float: left; height: 50vh; width: 30vw; background-color: black;"></button></a>
+    <div style="float: left; height: 30vh; width: 3vw;"></div>
+    <a href="button/c"><button style="float: left; height: 90vh; width: 30vw; background-color: black;"></button></a>
+</body>
+</html>

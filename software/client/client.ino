@@ -4,6 +4,8 @@
 const char* ssid = "scarlet";
 const char* password = "";
 
+const char id = '1';
+
 void forceApConn(){
   if (WiFi.status() == WL_CONNECTED){
      return;
@@ -48,7 +50,8 @@ void loop(){
    if (len > 0){
       incomingPacket[len] = '\0';
       Serial.println(incomingPacket);
-      switch(incomingPacket[0]){
+      if(id == incomingPacket[0] || 0 == incomingPacket[0]){
+        switch(incomingPacket[1]){
           case '0':
             digitalWrite(12, HIGH);
             digitalWrite(13, LOW);
@@ -65,6 +68,7 @@ void loop(){
             digitalWrite(14, HIGH);
             break;
         }
+      }
     }
   }
 }
