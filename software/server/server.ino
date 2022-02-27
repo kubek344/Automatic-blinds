@@ -13,6 +13,7 @@ unsigned int localUdpPort = 4210; // local port to listen on
 char incomingPacket[255]; // buffer for incoming packets
 char* replyPacket = "03"; // a reply string to send back
 String line = "";
+char target = '0';
 
 WiFiServer server(80);
 
@@ -121,6 +122,7 @@ char* newreplyPacket = replyPacket;
         }else{
           Serial.println("huh");
           }
+          replyPacket[0] = target;
 
         client.flush();
       }
@@ -145,13 +147,14 @@ byte a = digitalRead(12);
 byte b = digitalRead(13);
 byte c = digitalRead(14);
 if(a){
-  replyPacket = "10";
+  replyPacket = "00";
 }else if(b){
-  replyPacket = "11";
+  replyPacket = "01";
 }else if(c){
-  replyPacket = "12";
+  replyPacket = "02";
 }
 if(replyPacket != newreplyPacket){
+    replyPacket[0] = target;
     Serial.println(replyPacket);
     Udp.beginPacket("192.168.4.255", localUdpPort);
     Udp.write(replyPacket);

@@ -50,7 +50,7 @@ void loop(){
    if (len > 0){
       incomingPacket[len] = '\0';
       Serial.println(incomingPacket);
-      if(id == incomingPacket[0] || 0 == incomingPacket[0]){
+      if(id == incomingPacket[0] || '0' == incomingPacket[0]){
         switch(incomingPacket[1]){
           case '0':
             digitalWrite(12, HIGH);
