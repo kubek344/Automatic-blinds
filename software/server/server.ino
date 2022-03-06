@@ -72,9 +72,12 @@ void setup()
 Serial.begin(9600);
 Serial.println();
 
-pinMode(12, INPUT); //yellow button
-pinMode(13, INPUT); //yellow button
-pinMode(14, INPUT); //green button
+pinMode(14, INPUT_PULLUP);
+pinMode(12, INPUT_PULLUP);
+pinMode(13, INPUT_PULLUP);
+pinMode(5, INPUT_PULLUP);
+pinMode(4, INPUT_PULLUP);
+pinMode(3, INPUT_PULLUP);
 
 forceApStart();
 
@@ -122,7 +125,6 @@ char* newreplyPacket = replyPacket;
         }else{
           Serial.println("huh");
           }
-          replyPacket[0] = target;
 
         client.flush();
       }
@@ -143,15 +145,26 @@ char* newreplyPacket = replyPacket;
       }
     Serial.printf("UDP packet contents: %s\n", incomingPacket);
     }
-byte a = digitalRead(12);
-byte b = digitalRead(13);
+byte a = digitalRead(5);
+byte b = digitalRead(4);
 byte c = digitalRead(14);
-if(a){
+byte d = digitalRead(12);
+byte e = digitalRead(13);
+byte f = digitalRead(3);
+if(!a){
   replyPacket = "00";
-}else if(b){
+}else if(!b){
   replyPacket = "01";
-}else if(c){
+}else if(!c){
   replyPacket = "02";
+}
+
+if(!d){
+  target = '2';
+}else if(!e){
+  target = '1';
+}else if(!f){
+  target = '0';
 }
 if(replyPacket != newreplyPacket){
     replyPacket[0] = target;

@@ -4,7 +4,7 @@
 const char* ssid = "scarlet";
 const char* password = "";
 
-const char id = '1';
+const char id = '2';
 
 void forceApConn(){
   if (WiFi.status() == WL_CONNECTED){
