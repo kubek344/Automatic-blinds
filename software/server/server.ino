@@ -1,5 +1,31 @@
 #include <ESP8266WiFi.h>
 #include <WiFiUdp.h>
+#include <PCF8574.h>
+#include <SPI.h>
+#include <Wire.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
+
+#define Left 12
+#define Right 14
+
+#define SCREEN_WIDTH 128 // OLED display width, in pixels
+#define SCREEN_HEIGHT 32 // OLED display height, in pixels
+#define OLED_RESET     -1 // Reset pin # (or -1 if sharing Arduino reset pin)
+#define SCREEN_ADDRESS 0x3C ///< See datasheet for Address; 0x3D for 128x64, 0x3C for 128x32
+
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
+PCF8574 pcf20(0x20);
+
+unsigned int blinkMillis;
+unsigned int buttonMillis;
+
+int counter = 0;
+int state;
+int oldState;
+int x = 0;
+int y = 0;
+
 
 const char* ssid = "scarlet";
 const char* password = "";
@@ -17,7 +43,51 @@ char target = '0';
 
 WiFiServer server(80);
 
+void readEncoder(){
+  state = digitalRead(Left);
+  if(state != oldState){
+    if(digitalRead(Right) != state){
+      if(counter > 0){
+        if(x % 2){
+          counter--;
+      }
+        x++;
+      }
+    }else{
+      if(counter < 9){
+        if(y % 2){
+          counter++;
+        }
+        y++;
+      }
+    }
+    writeNumber(counter);
+    target = (char)(counter+'0');
+    Serial.println(target);
+  }
+  oldState=state; 
+}
 
+void beginDisplay(){
+  if(!display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS)) {
+    Serial.println(F("SSD1306 allocation failed"));
+    delay(200);
+    beginDisplay();
+  }
+}
+
+void writeNumber(int x) {
+  display.clearDisplay();
+
+  display.setTextSize(4);
+  display.setTextColor(SSD1306_WHITE);
+  
+  display.setCursor(54,0);
+  
+  display.println(x);
+  display.display();
+  Serial.println(x);
+}
 
 void clientstatus(){
   unsigned char number_client;
@@ -49,8 +119,8 @@ Serial.println(WiFi.softAPIP());
 
 while (WiFi.softAPgetStationNum()== 0)
 {
-delay(1000);
 Serial.println("Wait for clien");
+readEncoder();
 }
 
 Serial.printf("Stations connected to soft-AP = %d\n", WiFi.softAPgetStationNum());
@@ -72,12 +142,19 @@ void setup()
 Serial.begin(9600);
 Serial.println();
 
-pinMode(14, INPUT_PULLUP);
-pinMode(12, INPUT_PULLUP);
-pinMode(13, INPUT_PULLUP);
-pinMode(5, INPUT_PULLUP);
-pinMode(4, INPUT_PULLUP);
-pinMode(3, INPUT_PULLUP);
+Serial.begin(9600);
+pcf20.begin();
+beginDisplay();
+
+display.clearDisplay();
+delay(2000);
+writeNumber(0);
+display.display();
+
+pinMode(Left, INPUT);
+pinMode(Right, INPUT);
+
+oldState = digitalRead(Left);
 
 forceApStart();
 
@@ -88,7 +165,8 @@ server.begin();
 }
 
 void loop(){
-  
+readEncoder();
+
 char* newreplyPacket = replyPacket;
  WiFiClient client = server.available();// wait for a client (web browser) to connect
   if (client){
@@ -145,27 +223,49 @@ char* newreplyPacket = replyPacket;
       }
     Serial.printf("UDP packet contents: %s\n", incomingPacket);
     }
-byte a = digitalRead(5);
-byte b = digitalRead(4);
-byte c = digitalRead(14);
-byte d = digitalRead(12);
-byte e = digitalRead(13);
-byte f = digitalRead(3);
-if(!a){
-  replyPacket = "00";
-}else if(!b){
-  replyPacket = "01";
-}else if(!c){
-  replyPacket = "02";
+
+static bool state;
+static bool statee;
+static bool stateee;
+unsigned int currentMillis = millis();
+  
+if(currentMillis - buttonMillis >= 50){
+  buttonMillis = currentMillis;
+
+  if(state != pcf20.readButton(0)){
+    if(state){
+      Serial.println("press 0");
+      replyPacket = "00";
+    }
+      state = !state;
+    }
+
+  if(statee != pcf20.readButton(1)){
+    if(statee){
+      Serial.println("press 1");
+      replyPacket = "01";
+    }
+    statee = !statee;
+  }
+
+  if(stateee != pcf20.readButton(2)){
+    if(stateee){
+      Serial.println("press 2");
+      replyPacket = "02";
+    }
+  }
+  stateee = !stateee;
+}
+  
+if(currentMillis - blinkMillis >= 500){
+  blinkMillis = currentMillis;
+
+  pcf20.toggle(0);
+  pcf20.toggle(1);
+  pcf20.toggle(2);
+  Serial.println(pcf20.read8(), BIN);
 }
 
-if(!d){
-  target = '2';
-}else if(!e){
-  target = '1';
-}else if(!f){
-  target = '0';
-}
 if(replyPacket != newreplyPacket){
     replyPacket[0] = target;
     Serial.println(replyPacket);
