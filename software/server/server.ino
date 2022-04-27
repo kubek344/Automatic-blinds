@@ -272,5 +272,9 @@ if(replyPacket != newreplyPacket){
     Udp.beginPacket("192.168.4.255", localUdpPort);
     Udp.write(replyPacket);
     Udp.endPacket();
+    delay(20);
+    Udp.beginPacket("192.168.4.255", localUdpPort);
+    Udp.write(replyPacket);
+    Udp.endPacket();
   }
 }
