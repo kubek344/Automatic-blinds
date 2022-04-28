@@ -63,7 +63,6 @@ void readEncoder(){
     }
     writeNumber(counter);
     target = (char)(counter+'0');
-    Serial.println(target);
   }
   oldState=state; 
 }
@@ -142,7 +141,6 @@ void setup()
 Serial.begin(9600);
 Serial.println();
 
-Serial.begin(9600);
 pcf20.begin();
 beginDisplay();
 
@@ -234,7 +232,6 @@ if(currentMillis - buttonMillis >= 50){
 
   if(state != pcf20.readButton(0)){
     if(state){
-      Serial.println("press 0");
       replyPacket = "00";
     }
       state = !state;
@@ -242,7 +239,6 @@ if(currentMillis - buttonMillis >= 50){
 
   if(statee != pcf20.readButton(1)){
     if(statee){
-      Serial.println("press 1");
       replyPacket = "01";
     }
     statee = !statee;
@@ -250,7 +246,6 @@ if(currentMillis - buttonMillis >= 50){
 
   if(stateee != pcf20.readButton(2)){
     if(stateee){
-      Serial.println("press 2");
       replyPacket = "02";
     }
   }
@@ -263,12 +258,11 @@ if(currentMillis - blinkMillis >= 500){
   pcf20.toggle(0);
   pcf20.toggle(1);
   pcf20.toggle(2);
-  Serial.println(pcf20.read8(), BIN);
 }
 
 if(replyPacket != newreplyPacket){
-    replyPacket[0] = target;
     Serial.println(replyPacket);
+    replyPacket[0] = target;
     Udp.beginPacket("192.168.4.255", localUdpPort);
     Udp.write(replyPacket);
     Udp.endPacket();

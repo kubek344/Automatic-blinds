@@ -3,11 +3,6 @@
 #include <ESP8266WiFi.h>
 #include <WiFiUdp.h>
 
-const char* ssid = "scarlet";
-const char* password = "";
-
-const char id = '1';
-
 #define MOTOR_STEPS 200
 #define RPM 120
 
@@ -15,6 +10,12 @@ const char id = '1';
 #define DIR 5
 #define STEP 13
 #define SLEEP 16
+
+const char* ssid = "scarlet";
+const char* password = "";
+
+const char id = '1';
+
 BasicStepperDriver stepper(MOTOR_STEPS, DIR, STEP, SLEEP);
 
 int maxRots = 10;
@@ -24,32 +25,27 @@ void changePosition(char param) {
   switch (param) {
     case '0':
       while (pos > 0) {
-        stepper.move(-360);
+        stepper.move(-200);
         pos--;
-        Serial.println(pos);
       }
       break;
 
     case '1':
       while (pos > maxRots / 2) {
-        stepper.move(-360);
+        stepper.move(-200);
         pos--;
-        Serial.println(pos);
       }
       while (pos < maxRots / 2) {
-        stepper.move(360);
+        stepper.move(200);
         pos++;
-        Serial.println(pos);
       }
       break;
 
     case '2':
       while (pos < maxRots) {
-        stepper.move(360);
+        stepper.move(200);
         pos++;
-        Serial.println(pos);
       }
-      Serial.println(pos);
       break;
 
     case '3':
@@ -93,6 +89,7 @@ void setup() {
 
   Udp.begin(localUdpPort);
   Serial.printf("Now listening at IP %s, UDP port %d\n", WiFi.localIP().toString().c_str(), localUdpPort);
+  stepper.begin(RPM, MICROSTEPS);
 }
 
 void loop() {
@@ -102,25 +99,7 @@ void loop() {
     int len = Udp.read(incomingPacket, 255);
     if (len > 0) {
       incomingPacket[len] = '\0';
-      Serial.println(incomingPacket);
       if (id == incomingPacket[0] || '0' == incomingPacket[0]) {
-        /*switch (incomingPacket[1]) {
-          case '0':
-            digitalWrite(12, HIGH);
-            digitalWrite(13, LOW);
-            digitalWrite(14, LOW);
-            break;
-          case '1':
-            digitalWrite(12, LOW);
-            digitalWrite(13, HIGH);
-            digitalWrite(14, LOW);
-            break;
-          case '2':
-            digitalWrite(12, LOW);
-            digitalWrite(13, LOW);
-            digitalWrite(14, HIGH);
-            break;
-        }*/
         changePosition(incomingPacket[1]);
       }
     }

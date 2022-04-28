@@ -18,32 +18,27 @@ void changePosition(char param) {
   switch (param) {
     case '0':
       while (pos > 0) {
-        stepper.move(-360);
+        stepper.move(-200);
         pos--;
-        Serial.println(pos);
       }
       break;
 
     case '1':
       while (pos > maxRots / 2) {
-        stepper.move(-360);
+        stepper.move(-200);
         pos--;
-        Serial.println(pos);
       }
       while (pos < maxRots / 2) {
-        stepper.move(360);
+        stepper.move(200);
         pos++;
-        Serial.println(pos);
       }
       break;
 
     case '2':
       while (pos < maxRots) {
-        stepper.move(360);
+        stepper.move(200);
         pos++;
-        Serial.println(pos);
       }
-      Serial.println(pos);
       break;
 
     case '3':
@@ -59,19 +54,17 @@ void changePosition(char param) {
   }
 }
 
-
 void setup() {
   Serial.begin(9600);
   stepper.begin(RPM, MICROSTEPS);
 }
 
-void loop() {/*
+void loop() {
   changePosition('3');
   changePosition('0');
   changePosition('2');
   changePosition('1');
   changePosition('2');
-  changePosition('4');*/
-  stepper.move(200);
-  delay(10000);
+  changePosition('4');
+  delay(1000);
 }
